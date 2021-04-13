@@ -1,0 +1,169 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  swimming-results-api
+
+  SAM Template for swimming-results-api
+  
+Parameters:
+  ServiceName:
+    Type: String
+    Default: swimming-api
+  StageName:
+    Description: The name of the deployment stage dev, prod, or local
+    Type: String
+    AllowedValues:
+      - dev
+      - prod
+      - local
+    Default: dev
+
+Mappings:
+  StageNameMap:
+    dev:
+      TableName: 'swimming-results-db-dev'
+    prod:
+      TableName: 'swimming-results-db-prod'
+    local:
+      TableName: 'swimming-results-db'
+
+# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
+Globals:
+  Function:
+    Timeout: 3
+    Runtime: nodejs14.x
+    MemorySize: 256
+    ReservedConcurrentExecutions: 5
+    Tracing: Active
+    Tags:
+      'greenhorn:project': 'Phrases'
+      'greenhorn:service-name': !Sub "${ServiceName}"
+      'greenhorn:owner': 'Rigikulm'
+    Environment:
+      Variables:
+        TABLE_NAME: !Sub "greetings-db-${StageName}"
+        STAGE: !Ref StageName
+
+Resources:
+  HelloFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      FunctionName: !Sub "${ServiceName}-${StageName}-get-hello"
+      Description: 'Returns the greeting hello'
+      CodeUri: src/functions/hello
+      Handler: handler.default
+      Policies:
+        - AmazonDynamoDBFullAccess
+      Events:
+        Hello:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            Path: /hello
+            Method: get
+        HelloQuery:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            Path: /hello/{lang}
+            Method: get
+  GetPhraseFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      FunctionName: !Sub "${ServiceName}-${StageName}-get-phrase"
+      Description: 'Returns the requested phrase'
+      CodeUri: src/functions/phrase
+      Handler: handler.default
+      Policies:
+        - AmazonDynamoDBFullAccess
+      Events:
+        Phrase:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            Path: /phrase/{phraseId}
+            Method: get
+  GetPhrasesFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      FunctionName: !Sub "${ServiceName}-${StageName}-get-phrases"
+      Description: 'Returns the requested phrase'
+      CodeUri: src/functions/get-phrases
+      Handler: handler.default
+      Policies:
+        - AmazonDynamoDBFullAccess
+      Events:
+        Phrase:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            Path: /phrases/{phraseId}
+            Method: get
+  GoodbyeFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      FunctionName: !Sub "${ServiceName}-${StageName}-get-goodbye"
+      Description: 'Returns the greeting goodbye'
+      CodeUri: src/functions/goodbye
+      Handler: handler.default
+      Policies:
+        - AmazonDynamoDBFullAccess
+      Events:
+        Goodbye:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            Path: /goodbye
+            Method: get
+        GoodbyeQuery:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            Path: /goodbye/{lang}
+            Method: get
+  CreatePhraseFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      FunctionName: !Sub "${ServiceName}-${StageName}-create-phrase"
+      Description: 'Creates a new phrase for a given language binding'
+      CodeUri: src/functions/create-phrase
+      Handler: handler.default
+      Policies:
+        - AmazonDynamoDBFullAccess
+      Events:
+        Create:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            Path: /phrase
+            Method: post
+  GreetingsDynamoDBTable: 
+    Type: AWS::DynamoDB::Table
+    Properties: 
+      AttributeDefinitions: 
+        - 
+          AttributeName: "id"
+          AttributeType: "S"
+        - 
+          AttributeName: "lang"
+          AttributeType: "S"
+      KeySchema: 
+        - 
+          AttributeName: "id"
+          KeyType: "HASH"
+        - 
+          AttributeName: "lang"
+          KeyType: "RANGE"
+      ProvisionedThroughput: 
+        ReadCapacityUnits: "1"
+        WriteCapacityUnits: "1"
+      TableName: !Sub "greetings-db-${StageName}"
+
+Outputs:
+  # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
+  # Find out more about other implicit resources you can reference within SAM
+  # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
+  HelloApi:
+    Description: "API Gateway endpoint URL for Prod stage for Hello function"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hello/"
+  GoodbyeApi:
+    Description: "API Gateway endpoint URL for Prod stage for Goodbye function"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/goodbye/"
+  PhraseApi:
+    Description: "API Gateway endpoint URL for Prod stage for Phrase function"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/phrase/"
+
+  
