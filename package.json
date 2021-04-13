@@ -4,8 +4,10 @@
   "description": "API for managing swimmers results to track progress",
   "main": "index.js",
   "scripts": {
-    "clean": "rimraf ./coverage ./nyc_output",
-    "clean:all": "rimraf ./coverage ./nyc_output ./node_modules",
+    "build": "webpack-cli",
+    "watch": "webpack-cli -w",
+    "clean": "rimraf ./.aws_sam ./coverage ./.nyc_output",
+    "clean:all": "rimraf ./.aws_sam ./coverage ./.nyc_output ./node_modules",
     "test": "mocha",
     "test:cov": "nyc mocha && open ./coverage/index.html"
   },
@@ -17,7 +19,8 @@
     "aws",
     "lambda",
     "dynamodb",
-    "typescript"
+    "typescript",
+    "SAM"
   ],
   "author": "",
   "license": "MIT",

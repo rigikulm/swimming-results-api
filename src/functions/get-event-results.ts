@@ -5,3 +5,9 @@ import response from '../lib/response';
 
 // eslint-disable-next-line no-unused-vars
 import { APIGatewayEvent } from "aws-lambda";
+
+let ddb: DynamoDBClient;
+
+export const handler = async (event: APIGatewayEvent) => {
+
+};
