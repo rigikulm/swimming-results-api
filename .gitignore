@@ -352,3 +352,9 @@ MigrationBackup/
 # Mocha and NYC Coverage files
 coverage/
 .nyc_output/
+
+# SAM
+.aws-sam/
+
+# VSCODE
+.vscode/

@@ -9,5 +9,5 @@ import { APIGatewayEvent } from "aws-lambda";
 let ddb: DynamoDBClient;
 
 export const handler = async (event: APIGatewayEvent) => {
-
+    return Promise.resolve(response.success(200, {}, { message: 'Successful getEventResults' }));
 };
