@@ -14,15 +14,23 @@ export const handler = async (event: APIGatewayEvent) => {
     const log = new FaasLogger(event, 'swimming-results-api');
     log.info('Starting get-event-results');
 
-    // Validate the requested event
+    // Validate the eventId path parameter
+    let eventId: string;
     if (event.pathParameters && event.pathParameters.eventId ) {
-        const { eventId } = event.pathParameters;
+        eventId = event.pathParameters.eventId;
+        if (!isSwimmingEvent(eventId)) {
+            log.error(errorStatus('BADQUERY', 'Invalid path parameter'),
+                      `${eventId} is not a valid swimming eventId`);
+            return Promise.resolve(response.error(400, {}, new Error(`${eventId} is not a valid swimming eventId`)));
+        }
     } else {
+        // @TODO is this check required or does APIGW always make certain the
+        // path parameter is provided
         log.error(errorStatus('BADQUERY', 'swimming eventId not specified'),
                   'Cannot access the requested swimming results');
         return Promise.resolve(response.error(400, {}));
     }
 
-
-    return Promise.resolve(response.success(200, {}, { message: 'Successful getEventResults' }));
+    log.info(httpStatus(200), `Success! Returned results for ${eventId}`);
+    return Promise.resolve(response.success(200, {}, { message: `Success! Returned results for ${eventId}` }));
 };
