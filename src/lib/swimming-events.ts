@@ -1,6 +1,6 @@
 // Defines constants and types for the supported Swimming events
 
-const enum SwimmingEvents {
+enum SwimmingEvents {
     FREE50SCYD = 'Free50SCYD',
     FREE100SCYD = 'Free100SCYD',
     FREE200SCYD = 'Free200SCYD',
@@ -39,4 +39,9 @@ const enum SwimmingEvents {
     FLY200LCM = 'Fly200LCM'
 };
 
-export type SwimmingEventType = `${SwimmingEvents}`;
+//export type SwimmingEventType = `${SwimmingEvents}`;
+export type SwimmingEventType = keyof typeof SwimmingEvents
+
+export function isSwimmingEvent(arg: unknown): arg is SwimmingEventType {
+    return (typeof arg === 'string' && arg in SwimmingEvents);
+}

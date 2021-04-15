@@ -9,7 +9,8 @@
     "clean": "rimraf ./.aws_sam ./coverage ./.nyc_output",
     "clean:all": "rimraf ./.aws_sam ./coverage ./.nyc_output ./node_modules",
     "test": "mocha",
-    "test:cov": "nyc mocha && open ./coverage/index.html"
+    "test:cov": "nyc mocha && open ./coverage/index.html",
+    "startapi": "sam local start-api"
   },
   "repository": {
     "type": "git",
