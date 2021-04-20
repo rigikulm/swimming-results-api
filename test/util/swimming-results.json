@@ -1,0 +1,85 @@
+{
+  "swimming-results-db": [
+    {
+      "PutRequest": {
+        "Item": {
+          "id": {"S": "hello"},
+          "lang": {"S": "en"},
+          "phrase": {"S": "Hello"}
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "id": {"S": "hello"},
+          "lang": {"S": "de"},
+          "phrase": {"S": "Hallo"}
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "id": {"S": "hello"},
+          "lang": {"S": "ch"},
+          "phrase": {"S": "Gruezi"}
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "id": {"S": "goodbye"},
+          "lang": {"S": "de"},
+          "phrase": {"S": "Aufwiedersehen"}
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "id": {"S": "goodbye"},
+          "lang": {"S": "en"},
+          "phrase": {"S": "Good-bye"}
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "id": {"S": "goodbye"},
+          "lang": {"S": "ch"},
+          "phrase": {"S": "Tschuess"}
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "id": {"S": "good-morning"},
+          "lang": {"S": "de"},
+          "phrase": {"S": "Guten Morgen"}
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "id": {"S": "good-morning"},
+          "lang": {"S": "en"},
+          "phrase": {"S": "Good Morning"}
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "id": {"S": "good-morning"},
+          "lang": {"S": "ch"},
+          "phrase": {"S": "Morgen"}
+        }
+      }
+    }
+  ]
+}

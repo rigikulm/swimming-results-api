@@ -1,0 +1,27 @@
+{
+  "TableName": "swimming-results-db",
+  "AttributeDefinitions": [
+    {
+      "AttributeName": "pk",
+      "AttributeType": "S"
+    },
+    {
+      "AttributeName": "sk",
+      "AttributeType": "S"
+    }
+  ],
+  "KeySchema": [
+    {
+      "KeyType": "HASH",
+      "AttributeName": "pk"
+    },
+    {
+      "KeyType": "RANGE",
+      "AttributeName": "sk"
+    }
+  ],
+  "ProvisionedThroughput": {
+    "WriteCapacityUnits": 1,
+    "ReadCapacityUnits": 1
+  }
+}
