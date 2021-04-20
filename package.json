@@ -10,7 +10,11 @@
     "clean:all": "rimraf ./.aws_sam ./coverage ./.nyc_output ./node_modules",
     "test": "mocha",
     "test:cov": "nyc mocha && open ./coverage/index.html",
-    "startapi": "sam local start-api"
+    "startapi": "sam local start-api",
+    "startdb": "docker run -d -v $PWD:/dynamodb_local_db --name dynamodb -p 8000:8000 amazon/dynamodb-local",
+    "createdb": "/bin/sh ./test/util/create-table.sh",
+    "stagedb": "/bin/sh ./test/util/stage-db.sh",
+    "dumpdb": "/bin/sh ./test/util/dump-db.sh"
   },
   "repository": {
     "type": "git",

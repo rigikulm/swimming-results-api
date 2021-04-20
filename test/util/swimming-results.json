@@ -3,8 +3,8 @@
     {
       "PutRequest": {
         "Item": {
-          "id": {"S": "hello"},
-          "lang": {"S": "en"},
+          "pk": {"S": "hello"},
+          "sk": {"S": "en"},
           "phrase": {"S": "Hello"}
         }
       }
@@ -12,8 +12,8 @@
     {
       "PutRequest": {
         "Item": {
-          "id": {"S": "hello"},
-          "lang": {"S": "de"},
+          "pk": {"S": "hello"},
+          "sk": {"S": "de"},
           "phrase": {"S": "Hallo"}
         }
       }
@@ -21,8 +21,8 @@
     {
       "PutRequest": {
         "Item": {
-          "id": {"S": "hello"},
-          "lang": {"S": "ch"},
+          "pk": {"S": "hello"},
+          "sk": {"S": "ch"},
           "phrase": {"S": "Gruezi"}
         }
       }
@@ -30,8 +30,8 @@
     {
       "PutRequest": {
         "Item": {
-          "id": {"S": "goodbye"},
-          "lang": {"S": "de"},
+          "pk": {"S": "goodbye"},
+          "sk": {"S": "de"},
           "phrase": {"S": "Aufwiedersehen"}
         }
       }
@@ -39,8 +39,8 @@
     {
       "PutRequest": {
         "Item": {
-          "id": {"S": "goodbye"},
-          "lang": {"S": "en"},
+          "pk": {"S": "goodbye"},
+          "sk": {"S": "en"},
           "phrase": {"S": "Good-bye"}
         }
       }
@@ -48,8 +48,8 @@
     {
       "PutRequest": {
         "Item": {
-          "id": {"S": "goodbye"},
-          "lang": {"S": "ch"},
+          "pk": {"S": "goodbye"},
+          "sk": {"S": "ch"},
           "phrase": {"S": "Tschuess"}
         }
       }
@@ -57,8 +57,8 @@
     {
       "PutRequest": {
         "Item": {
-          "id": {"S": "good-morning"},
-          "lang": {"S": "de"},
+          "pk": {"S": "good-morning"},
+          "sk": {"S": "de"},
           "phrase": {"S": "Guten Morgen"}
         }
       }
@@ -66,8 +66,8 @@
     {
       "PutRequest": {
         "Item": {
-          "id": {"S": "good-morning"},
-          "lang": {"S": "en"},
+          "pk": {"S": "good-morning"},
+          "sk": {"S": "en"},
           "phrase": {"S": "Good Morning"}
         }
       }
@@ -75,8 +75,8 @@
     {
       "PutRequest": {
         "Item": {
-          "id": {"S": "good-morning"},
-          "lang": {"S": "ch"},
+          "pk": {"S": "good-morning"},
+          "sk": {"S": "ch"},
           "phrase": {"S": "Morgen"}
         }
       }
