@@ -3,81 +3,42 @@
     {
       "PutRequest": {
         "Item": {
-          "pk": {"S": "hello"},
-          "sk": {"S": "en"},
-          "phrase": {"S": "Hello"}
+          "pk": {"S": "USR#mleml"},
+          "sk": {"S": "EVT#FREE50SCYD"},
+          "eventId": {"S": "FREE50SCYD"},
+          "time": {"S": "1:05.789"}
         }
       }
     },
     {
       "PutRequest": {
         "Item": {
-          "pk": {"S": "hello"},
-          "sk": {"S": "de"},
-          "phrase": {"S": "Hallo"}
+          "pk": {"S": "USR#mleml"},
+          "sk": {"S": "SID"},
+          "first": {"S": "Megan"},
+          "last": {"S": "Relmel"},
+          "birthdate": {"S": "2008-05-31"},
+          "team": {"S": "LAC"}
         }
       }
     },
     {
       "PutRequest": {
         "Item": {
-          "pk": {"S": "hello"},
-          "sk": {"S": "ch"},
-          "phrase": {"S": "Gruezi"}
+          "pk": {"S": "USR#mleml"},
+          "sk": {"S": "EVT#FLY50SCYD"},
+          "eventId": {"S": "FLY50SCYD"},
+          "time": {"S": "00:45.789"}
         }
       }
     },
     {
       "PutRequest": {
         "Item": {
-          "pk": {"S": "goodbye"},
-          "sk": {"S": "de"},
-          "phrase": {"S": "Aufwiedersehen"}
-        }
-      }
-    },
-    {
-      "PutRequest": {
-        "Item": {
-          "pk": {"S": "goodbye"},
-          "sk": {"S": "en"},
-          "phrase": {"S": "Good-bye"}
-        }
-      }
-    },
-    {
-      "PutRequest": {
-        "Item": {
-          "pk": {"S": "goodbye"},
-          "sk": {"S": "ch"},
-          "phrase": {"S": "Tschuess"}
-        }
-      }
-    },
-    {
-      "PutRequest": {
-        "Item": {
-          "pk": {"S": "good-morning"},
-          "sk": {"S": "de"},
-          "phrase": {"S": "Guten Morgen"}
-        }
-      }
-    },
-    {
-      "PutRequest": {
-        "Item": {
-          "pk": {"S": "good-morning"},
-          "sk": {"S": "en"},
-          "phrase": {"S": "Good Morning"}
-        }
-      }
-    },
-    {
-      "PutRequest": {
-        "Item": {
-          "pk": {"S": "good-morning"},
-          "sk": {"S": "ch"},
-          "phrase": {"S": "Morgen"}
+          "pk": {"S": "USR#mleml"},
+          "sk": {"S": "EVT#FREE100SCYD"},
+          "eventId": {"S": "FREE100SCYD"},
+          "time": {"S": "01:45.789"}
         }
       }
     }
