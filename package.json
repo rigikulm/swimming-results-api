@@ -10,8 +10,11 @@
     "clean:all": "rimraf ./.aws_sam ./coverage ./.nyc_output ./node_modules",
     "test": "mocha",
     "test:cov": "nyc mocha && open ./coverage/index.html",
-    "startapi": "sam local start-api",
-    "startdb": "docker run -d -v $PWD:/dynamodb_local_db --name dynamodb -p 8000:8000 amazon/dynamodb-local",
+    "startapi": "sam local start-api --docker-network sam-local",
+    "startnet": "docker network create sam-local",
+    "startdb": "docker run -d -v $PWD:/dynamodb_local_db --name dynamodb --network sam-local -p 8000:8000 amazon/dynamodb-local -jar DynamoDBLocal.jar -sharedDb",
+    "stopdb": "docker stop dynamodb",
+    "rmdb": "docker rm dynamodb",
     "createdb": "/bin/sh ./test/util/create-table.sh",
     "stagedb": "/bin/sh ./test/util/stage-db.sh",
     "dumpdb": "/bin/sh ./test/util/dump-db.sh"
@@ -62,7 +65,8 @@
     "@aws-sdk/client-dynamodb": "^3.12.0",
     "@aws-sdk/types": "^3.12.0",
     "@aws-sdk/util-dynamodb": "^3.12.0",
-    "@greenhorn/faas-logger": "file:../faas-logger/dist"
+    "@greenhorn/faas-logger": "file:../faas-logger/dist",
+    "short-uuid": "^4.1.0"
   },
   "nyc": {
     "extension": [

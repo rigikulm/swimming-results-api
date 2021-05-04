@@ -4,9 +4,21 @@
       "PutRequest": {
         "Item": {
           "pk": {"S": "USR#mleml"},
-          "sk": {"S": "EVT#FREE50SCYD"},
+          "sk": {"S": "FREE50SCYD#1619671083351"},
           "eventId": {"S": "FREE50SCYD"},
-          "time": {"S": "1:05.789"}
+          "eventTime": {"S": "35.789"},
+          "eventDate": {"S": "2021-04-28"}
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "pk": {"S": "USR#mleml"},
+          "sk": {"S": "FREE50SCYD#1619671083361"},
+          "eventId": {"S": "FREE50SCYD"},
+          "eventTime": {"S": "32.789"},
+          "eventDate": {"S": "2021-04-28"}
         }
       }
     },
@@ -26,9 +38,10 @@
       "PutRequest": {
         "Item": {
           "pk": {"S": "USR#mleml"},
-          "sk": {"S": "EVT#FLY50SCYD"},
+          "sk": {"S": "FLY50SCYD#1619671083399"},
           "eventId": {"S": "FLY50SCYD"},
-          "time": {"S": "00:45.789"}
+          "eventTime": {"S": "00:45.789"},
+          "eventDate": {"S": "2021-03-28"}
         }
       }
     },
@@ -36,9 +49,43 @@
       "PutRequest": {
         "Item": {
           "pk": {"S": "USR#mleml"},
-          "sk": {"S": "EVT#FREE100SCYD"},
+          "sk": {"S": "FLY100SCYD#1619671083425"},
+          "eventId": {"S": "FLY100SCYD"},
+          "eventTime": {"S": "01:45.789"},
+          "eventDate": {"S": "2021-04-28"}
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "pk": {"S": "USR#mleml"},
+          "sk": {"S": "FREE100SCYD#1620135437386"},
           "eventId": {"S": "FREE100SCYD"},
-          "time": {"S": "01:45.789"}
+          "eventTime": {"S": "01:45.789"},
+          "eventDate": {"S": "2021-04-28"}
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "pk": {"S": "USR#mleml"},
+          "sk": {"S": "BACK100SCYD#1620135437376"},
+          "eventId": {"S": "BACK100SCYD"},
+          "eventTime": {"S": "01:45.789"},
+          "eventDate": {"S": "2021-04-28"}
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "pk": {"S": "USR#mleml"},
+          "sk": {"S": "FREE100SCYD#1620135437410"},
+          "eventId": {"S": "FREE100SCYD"},
+          "eventTime": {"S": "01:02.789"},
+          "eventDate": {"S": "2021-05-03"}
         }
       }
     }
