@@ -65,10 +65,10 @@ export const handler = async (event: APIGatewayEvent) => {
         // NullAttribute: null
         ExpressionAttributeValues: marshall({
           ":s": USER,
-          ":e": 'EVT#' + eventId
+          ":e": eventId
         }),
         // Specifies the values that define the range of the retrieved items. In this case, items in Season 2 before episode 9.
-        KeyConditionExpression: "pk = :s and sk = :e"
+        KeyConditionExpression: "pk = :s and begins_with(sk, :e)"
       };
 
       // Create the DynamoDB client if not previously done
