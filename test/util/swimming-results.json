@@ -7,7 +7,8 @@
           "sk": {"S": "FREE50SCYD#1619671083351"},
           "eventId": {"S": "FREE50SCYD"},
           "eventTime": {"S": "35.789"},
-          "eventDate": {"S": "2021-04-28"}
+          "eventDate": {"S": "2021-04-28"},
+          "meet": {"S": "LAC April Time Trials"}
         }
       }
     },
@@ -18,7 +19,8 @@
           "sk": {"S": "FREE50SCYD#1619671083361"},
           "eventId": {"S": "FREE50SCYD"},
           "eventTime": {"S": "32.789"},
-          "eventDate": {"S": "2021-04-28"}
+          "eventDate": {"S": "2021-04-28"},
+          "meet": {"S": "LAC April Time Trials"}
         }
       }
     },
@@ -41,7 +43,8 @@
           "sk": {"S": "FLY50SCYD#1619671083399"},
           "eventId": {"S": "FLY50SCYD"},
           "eventTime": {"S": "00:45.789"},
-          "eventDate": {"S": "2021-03-28"}
+          "eventDate": {"S": "2021-03-28"},
+          "meet": {"S": "LAC March Time Trials"}
         }
       }
     },
@@ -52,7 +55,8 @@
           "sk": {"S": "FLY100SCYD#1619671083425"},
           "eventId": {"S": "FLY100SCYD"},
           "eventTime": {"S": "01:45.789"},
-          "eventDate": {"S": "2021-04-28"}
+          "eventDate": {"S": "2021-04-28"},
+          "meet": {"S": "LAC April Time Trials"}
         }
       }
     },
@@ -63,7 +67,8 @@
           "sk": {"S": "FREE100SCYD#1620135437386"},
           "eventId": {"S": "FREE100SCYD"},
           "eventTime": {"S": "01:45.789"},
-          "eventDate": {"S": "2021-04-28"}
+          "eventDate": {"S": "2021-04-28"},
+          "meet": {"S": "LAC April Time Trials"}
         }
       }
     },
@@ -74,7 +79,8 @@
           "sk": {"S": "BACK100SCYD#1620135437376"},
           "eventId": {"S": "BACK100SCYD"},
           "eventTime": {"S": "01:45.789"},
-          "eventDate": {"S": "2021-04-28"}
+          "eventDate": {"S": "2021-04-28"},
+          "meet": {"S": "LAC April Time Trials"}
         }
       }
     },
@@ -85,7 +91,21 @@
           "sk": {"S": "FREE100SCYD#1620135437410"},
           "eventId": {"S": "FREE100SCYD"},
           "eventTime": {"S": "01:02.789"},
-          "eventDate": {"S": "2021-05-03"}
+          "eventDate": {"S": "2021-05-03"},
+          "meet": {"S": "LAC May Time Trials"}
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "pk": {"S": "USR#mleml"},
+          "sk": {"S": "FREE50SCYD#1620135437420"},
+          "eventId": {"S": "FREE50SCYD"},
+          "eventTime": {"S": "00:30.190"},
+          "eventDate": {"S": "2021-05-03"},
+          "meet": {"S": "LAC May Time Trials"},
+          "pr": {"BOOL": true}
         }
       }
     }

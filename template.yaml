@@ -60,6 +60,21 @@ Resources:
           Properties:
             Path: /swimming/results/{eventId}
             Method: get
+  EventPersonalRecordFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      FunctionName: !Sub "${ServiceName}-${StageName}-get-event-results"
+      Description: 'Returns the swimmers personal record for a particular event'
+      CodeUri: src/functions
+      Handler: get-event-pr.handler
+      Policies:
+        - AmazonDynamoDBFullAccess
+      Events:
+        SwimResultsQuery:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            Path: /swimming/results/{eventId}/pr
+            Method: get
   CreateResultFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
@@ -73,7 +88,7 @@ Resources:
         Create:
           Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
           Properties:
-            Path: /swimming/result
+            Path: /swimming/results
             Method: post
 Outputs:
   # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function

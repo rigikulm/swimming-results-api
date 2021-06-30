@@ -1,4 +1,4 @@
-// POST a new event result
+// Get the personl record (PR) for a particular event for the logged in swimmer
 import { DynamoDBClient, QueryCommand } from '@aws-sdk/client-dynamodb';
 import { marshall, unmarshall } from '@aws-sdk/util-dynamodb';
 import { SwimmingEventType, isSwimmingEvent } from '../lib/swimming-events';
@@ -23,7 +23,7 @@ let ddb: DynamoDBClient;
 
 export const handler = async (event: APIGatewayEvent) => {
     const log = new FaasLogger(event, 'swimming-results-api');
-    log.info('Starting post-event-result');
+    log.info('Starting get-event-pr');
 
     // Validate the eventId path parameter
     let eventId: string;
@@ -65,10 +65,13 @@ export const handler = async (event: APIGatewayEvent) => {
         // NullAttribute: null
         ExpressionAttributeValues: marshall({
           ":s": USER,
-          ":e": eventId
+          ":e": eventId,
+          ":pr": true
         }),
         // Specifies the values that define the range of the retrieved items. In this case, items in Season 2 before episode 9.
-        KeyConditionExpression: "pk = :s and begins_with(sk, :e)"
+        KeyConditionExpression: "pk = :s and begins_with(sk, :e)",
+        // Filters to only include records flagged as a PR
+        FilterExpression: "pr = :pr"
       };
 
       // Create the DynamoDB client if not previously done
@@ -89,6 +92,6 @@ export const handler = async (event: APIGatewayEvent) => {
         console.error(err);
       }
 
-    log.info(httpStatus(201), `Created: results for ${eventId}: ${JSON.stringify(items)}`);
-    return Promise.resolve(response.success(201, {}, { message: `Created: result for ${eventId}: ${JSON.stringify(items)}` }));
+    log.info(httpStatus(200), `Success! Results for ${eventId}: ${JSON.stringify(items)}`);
+    return Promise.resolve(response.success(200, {}, { message: `Success! Results for ${eventId}: ${JSON.stringify(items)}` }));
 };
