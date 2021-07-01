@@ -1,5 +1,5 @@
 // POST a new event result
-import { DynamoDBClient, QueryCommand } from '@aws-sdk/client-dynamodb';
+import { DynamoDBClient, PutItemCommand } from '@aws-sdk/client-dynamodb';
 import { marshall, unmarshall } from '@aws-sdk/util-dynamodb';
 import { SwimmingEventType, isSwimmingEvent } from '../lib/swimming-events';
 import { isLocal } from '../lib/local';
@@ -9,6 +9,7 @@ import { inspect } from 'util';
 
 // eslint-disable-next-line no-unused-vars
 import { APIGatewayEvent } from "aws-lambda";
+import { resourceLimits } from 'worker_threads';
 
 // Configure DynamoDB Client Configuration 
 const ddbConfig: any = {
@@ -21,27 +22,25 @@ const ddbConfig: any = {
 };
 let ddb: DynamoDBClient;
 
+// Lookup Partial<T> partial types in typescript
+interface Result {
+  eventId: SwimmingEventType | null,
+  eventDate: string | null,
+  eventTime: string | null,
+  meet: string | '';
+};
+
 export const handler = async (event: APIGatewayEvent) => {
     const log = new FaasLogger(event, 'swimming-results-api');
     log.info('Starting post-event-result');
 
-    // Validate the eventId path parameter
-    let eventId: string;
-    if (event.pathParameters && event.pathParameters.eventId ) {
-        eventId = event.pathParameters.eventId;
-        if (!isSwimmingEvent(eventId)) {
-            log.error(errorStatus('BADQUERY', 'Invalid path parameter'),
-                      `${eventId} is not a valid swimming eventId`);
-            return Promise.resolve(response.error(400, {}, new Error(`${eventId} is not a valid swimming eventId`)));
-        }
-    } else {
-        // @TODO is this check required or does APIGW always make certain the
-        // path parameter is provided
-        log.error(errorStatus('BADQUERY', 'swimming eventId not specified'),
-                  'Cannot access the requested swimming results');
+    if (!event.body) {
+        log.error(errorStatus('BADQUERY', 'missing event.body'),
+                  'Cannot create new swim result');
         return Promise.resolve(response.error(400, {}));
     }
-
+    const result = JSON.parse(event.body);
+  
     // Add local endpoint if function being run locally
     if (isLocal()) {
         ddbConfig['endpoint'] = 'http://dynamodb:8000';
@@ -53,22 +52,22 @@ export const handler = async (event: APIGatewayEvent) => {
     const USER = 'USR#mleml';
     const TABLE_NAME = 'swimming-results-db';
 
+    result.pk = USER;
+    result.sk = result.eventId + Date.now();
     const params = {
         TableName: TABLE_NAME,
-        // Convert the JavaScript object defining the objects to the required DynamoDB format.The format of values
-        // specifies the datatype. The following list demonstrates different datatype formatting requirements:
-        // HashKey: "hashKey",
-        // NumAttribute: 1,
-        // BoolAttribute: true,
-        // ListAttribute: [1, "two", false],
-        // MapAttribute: { foo: "bar" },
-        // NullAttribute: null
-        ExpressionAttributeValues: marshall({
-          ":s": USER,
-          ":e": eventId
-        }),
-        // Specifies the values that define the range of the retrieved items. In this case, items in Season 2 before episode 9.
-        KeyConditionExpression: "pk = :s and begins_with(sk, :e)"
+        ExpressionAttributeNames: {
+          "#sk": "sk"
+        },
+        ConditionExpression: "attribute_not_exists(#sk)",
+        Item: {
+          "pk": {"S": result.pk},
+          "sk": {"S": result.sk},
+          "eventId": {"S": result.eventId},
+          "eventDate": {"S": result.eventDate},
+          "eventTime": {"S": result.eventTime},
+          "meet": {"S": result.meet}
+        }
       };
 
       // Create the DynamoDB client if not previously done
@@ -76,19 +75,18 @@ export const handler = async (event: APIGatewayEvent) => {
           ddb = new DynamoDBClient(ddbConfig);
       }
 
-      let items: any = [];
       try {
-        const results = await ddb.send(new QueryCommand(params));
-        results.Items!.forEach((element, index, array) => {
-            //log.info(`element--> ${inspect(element)}`);
-            items.push(unmarshall(element));
-            //console.log(element);
-        });
-        log.info(`results--> ${inspect(items)}`);
+        const results = await ddb.send(new PutItemCommand(params));
+        // results.Items!.forEach((element, index, array) => {
+        //     //log.info(`element--> ${inspect(element)}`);
+        //     items.push(unmarshall(element));
+        //     //console.log(element);
+        // });
+        log.info(`results--> ${inspect(results)}`);
       } catch (err) {
         console.error(err);
       }
 
-    log.info(httpStatus(201), `Created: results for ${eventId}: ${JSON.stringify(items)}`);
-    return Promise.resolve(response.success(201, {}, { message: `Created: result for ${eventId}: ${JSON.stringify(items)}` }));
+    //log.info(httpStatus(201), `Created: results for ${eventId}: ${JSON.stringify(items)}`);
+    return Promise.resolve(response.success(201, {}, { message: `Created: ${JSON.stringify(result!)}` }));
 };
