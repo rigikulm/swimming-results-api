@@ -56,18 +56,7 @@ export const handler = async (event: APIGatewayEvent) => {
     result.sk = result.eventId + Date.now();
     const params = {
         TableName: TABLE_NAME,
-        ExpressionAttributeNames: {
-          "#sk": "sk"
-        },
-        ConditionExpression: "attribute_not_exists(#sk)",
-        Item: {
-          "pk": {"S": result.pk},
-          "sk": {"S": result.sk},
-          "eventId": {"S": result.eventId},
-          "eventDate": {"S": result.eventDate},
-          "eventTime": {"S": result.eventTime},
-          "meet": {"S": result.meet}
-        }
+        Item: marshall(result)
       };
 
       // Create the DynamoDB client if not previously done
@@ -76,17 +65,13 @@ export const handler = async (event: APIGatewayEvent) => {
       }
 
       try {
-        const results = await ddb.send(new PutItemCommand(params));
-        // results.Items!.forEach((element, index, array) => {
-        //     //log.info(`element--> ${inspect(element)}`);
-        //     items.push(unmarshall(element));
-        //     //console.log(element);
-        // });
-        log.info(`results--> ${inspect(results)}`);
+        const rc = await ddb.send(new PutItemCommand(params));
+        log.info(`DDB PutItemCommand response: ${JSON.stringify(rc)}`);
       } catch (err) {
-        console.error(err);
+        log.error(httpStatus(500), `Error: Could not create swim result. ${inspect(err)}`);
+        return Promise.resolve(response.error(500, {}, err));
       }
 
-    //log.info(httpStatus(201), `Created: results for ${eventId}: ${JSON.stringify(items)}`);
+    log.info(httpStatus(201), `Created: result: ${JSON.stringify(result)}`);
     return Promise.resolve(response.success(201, {}, { message: `Created: ${JSON.stringify(result!)}` }));
 };
