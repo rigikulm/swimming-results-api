@@ -1,5 +1,8 @@
 //import { APIGatewayProxyResult } from 'aws-lambda';
 
+/**
+ * @name response Generates sucess or error HTTP lsmbda response
+ */
 const response = {
   success: (statusCode: number = 200, headers: any = {}, data: any ={}) => {
     // Default response code with no data

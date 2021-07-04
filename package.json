@@ -8,6 +8,7 @@
     "watch": "webpack-cli -w",
     "clean": "rimraf ./.aws_sam ./coverage ./.nyc_output",
     "clean:all": "rimraf ./.aws_sam ./coverage ./.nyc_output ./node_modules",
+    "docs": "npx typedoc",
     "test": "mocha",
     "test:cov": "nyc mocha && open ./coverage/index.html",
     "startapi": "sam local start-api --docker-network sam-local",
@@ -67,7 +68,8 @@
     "@aws-sdk/util-dynamodb": "^3.16.0",
     "@greenhorn/faas-logger": "file:../faas-logger/dist",
     "joi": "^17.4.0",
-    "short-uuid": "^4.2.0"
+    "short-uuid": "^4.2.0",
+    "typedoc": "^0.21.2"
   },
   "nyc": {
     "extension": [

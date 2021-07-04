@@ -32,6 +32,12 @@ interface SwimResult {
   sk?: string
 };
 
+/**
+ * @function handler - Put the specified simming result into the databsse
+ * 
+ * @param event
+ * @returns 
+ */
 export const handler = async (event: APIGatewayEvent) => {
     const log = new FaasLogger(event, 'swimming-results-api');
     log.info('Starting post-event-result');

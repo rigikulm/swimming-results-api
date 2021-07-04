@@ -358,3 +358,6 @@ coverage/
 
 # VSCODE
 .vscode/
+
+# Typedoc
+docs/

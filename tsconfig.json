@@ -71,5 +71,11 @@
   "include": ["src/**/*.ts", "src/**/*.js"],
   "exclude": [
     "./node_modules", "./coverage", "./dist", "./test/"
-  ]
+  ],
+  "typedocOptions": {
+    "name": "Swimming Results API",
+    "readme": "./README.md",
+    "entryPoints": ["src/models", "src/lib", "src/functions"],
+    "out": "docs"
+  }
 }
