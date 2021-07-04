@@ -33,10 +33,10 @@ interface SwimResult {
 };
 
 /**
- * @function handler - Put the specified simming result into the databsse
+ * @function handler - Put the specified swimming result into the databsse
  * 
- * @param event
- * @returns 
+ * @param event - request 'event' that contains {@link models/swimming-result | SwimmingResult} details
+ * @returns success or error {@link lib/response | body response}
  */
 export const handler = async (event: APIGatewayEvent) => {
     const log = new FaasLogger(event, 'swimming-results-api');
