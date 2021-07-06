@@ -1,6 +1,6 @@
 // Defines constants and types for the supported Swimming events
 
-enum SwimmingEvents {
+export enum SwimmingEvents {
     FREE50SCYD = 'Free50SCYD',
     FREE100SCYD = 'Free100SCYD',
     FREE200SCYD = 'Free200SCYD',

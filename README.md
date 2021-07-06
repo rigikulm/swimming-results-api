@@ -25,7 +25,7 @@ Will leverage User Groups mapped to IAM roles to control access (approach still 
 The result must identify the following attributes:
 - Event (e.g. Free50SCYD, Free50LCM, Free50SCM)
 - Date
-- Swim Time
+- Swim Time (millseconds)
 - Location/meet (optional)
 
 #### POST result
@@ -35,7 +35,7 @@ The result must identify the following attributes:
 {
 	event: "Free50SCYD",
 	eventDate: "26Jun2021",
-	eventTime: "00:30.19",
+	eventTime: 30190,
 	meet: "LAC-SRVA Dual Meet"
 }
 ```
@@ -58,13 +58,13 @@ where `eventId` is a path parameter.
 		{
 			event: "Free50SCYD",
 			eventDate: "26Jun2021",
-			eventTime: "00:30.19",
+			eventTime: 30190,
 			meet: "LAC-SRVA Dual Meet"
 		},
 		{
 			event: "Free50SCYD",
 			eventDate: "26Mar2021",
-			eventTime: "00:32.19",
+			eventTime: 32190,
 			meet: "LAC Time Trials"
 		}
 	]
@@ -80,7 +80,7 @@ where `eventId` is a path parameter.
 {
 	event: "Free50SCYD",
 	eventDate: "26Jun2021",
-	eventTime: "00:30.19",
+	eventTime: 30190,
 	meet: "LAC-SRVA Dual Meet",
 	pr: true
 }
