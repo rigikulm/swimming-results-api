@@ -37,6 +37,12 @@ const resultSchema = Joi.object({
                 .required()
 });
 
+/**
+ * Constructs a swim result object from the event.body which is passed via `input`
+ * 
+ * @param input the AWS Lambda event.body parameter
+ * @returns a SwimResult (result), or error if there are invalid values in the body
+ */
 export function createSwimResult(input: any): {result: SwimResult, error: any} {
   let result = null;
   let {error, value} = resultSchema.validate(JSON.parse(input));
