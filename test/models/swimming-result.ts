@@ -66,4 +66,19 @@ describe('models/swimming-result package unit tests', () => {
     console.log(`error--> ${inspect(error)}`);
     expect(error.details[0].message).to.equal('"eventId" contains an invalid value');
   });
+
+  it('Return an invalid eventTime error', () => {
+    const body = {
+      eventId: 'FREE50LCM',
+      eventTime: '1:02.37',
+      eventDate: '2021-05-26',
+      meet: 'LAC May Time Trials'
+    };
+
+    let { result, error } = createSwimResult(JSON.stringify(body));
+    expect(result).to.be.null;
+    expect(error).not.to.be.undefined;
+    console.log(`error--> ${inspect(error)}`);
+    expect(error.details[0].message).to.equal('"eventTime" must be a number');
+  });
 });
