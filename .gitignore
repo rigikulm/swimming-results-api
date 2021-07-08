@@ -361,3 +361,6 @@ coverage/
 
 # Typedoc
 docs/
+
+# Macos
+.DS_Store
