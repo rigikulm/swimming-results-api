@@ -21,6 +21,24 @@ Will leverage User Groups mapped to IAM roles to control access (approach still 
 - User - can view/edit their entries and profile
 - Coach - can view/edit entries for swimmers on their team
 
+### Proposed REST paths
+```
+# POST result
+/swimming/results
+
+# GET results (paginated)
+/swimming/results
+
+# GET event results
+/swimming/results/{eventId}		// path parameter
+
+# GET personal recoords
+/swimming/results/pr
+
+GET event personal record
+/swimming/results/pr/{eventId}	// path parameter
+```
+
 ### Swimmer can add a new result
 The result must identify the following attributes:
 - Event (e.g. Free50SCYD, Free50LCM, Free50SCM)
@@ -95,3 +113,9 @@ Generate a report of the most recent time for each event that they have swam
 #### Other Use Cases
 - Ability to modify an existing entry
 - Ability to delete an existing entry
+
+## TODO Items
+- [ ] Refactor REST URLs to match latest proposal
+- [ ] For `get all` type queries introduce pagination
+- [ ] Refactor 'get' lambdas to handle use with and without an optional path parameter.
+	- Maybe introduce a query builder helper function.
