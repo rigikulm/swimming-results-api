@@ -1,4 +1,5 @@
 // Get the results for a particular event for the logged in swimmer
+import { ddbClient } from '../lib/dynamo-client';
 import { DynamoDBClient, QueryCommand } from '@aws-sdk/client-dynamodb';
 import { marshall, unmarshall } from '@aws-sdk/util-dynamodb';
 import { SwimmingEventType, isSwimmingEvent } from '../lib/swimming-events';
@@ -10,20 +11,10 @@ import { inspect } from 'util';
 // eslint-disable-next-line no-unused-vars
 import { APIGatewayEvent } from "aws-lambda";
 
-// Configure DynamoDB Client Configuration 
-const ddbConfig: any = {
-    region: 'us-west-2',
-    logger: console,
-    httpOptions: {
-      connectTimeout: 100
-    },
-    maxAttempts: 3
-};
-let ddb: DynamoDBClient;
-
 export const handler = async (event: APIGatewayEvent) => {
+    let ddb: DynamoDBClient;
     const log = new FaasLogger(event, 'swimming-results-api');
-    log.info('Starting get-event-results');
+    //log.info('Starting get-event-results');
 
     // Validate the eventId path parameter
     let eventId: string;
@@ -40,13 +31,6 @@ export const handler = async (event: APIGatewayEvent) => {
         log.error(errorStatus('BADQUERY', 'swimming eventId not specified'),
                   'Cannot access the requested swimming results');
         return Promise.resolve(response.error(400, {}));
-    }
-
-    // Add local endpoint if function being run locally
-    if (isLocal()) {
-        ddbConfig['endpoint'] = 'http://dynamodb:8000';
-        ddbConfig['logger'] = log;
-        log.info(`SAM_LOCAL connecting to dynamo at ${ddbConfig.endpoint}`);
     }
 
     const REGION = 'us-west-2';
@@ -72,9 +56,7 @@ export const handler = async (event: APIGatewayEvent) => {
       };
 
       // Create the DynamoDB client if not previously done
-      if (undefined === ddb) {
-          ddb = new DynamoDBClient(ddbConfig);
-      }
+      ddb = ddbClient(REGION);
 
       let items: any = [];
       try {
