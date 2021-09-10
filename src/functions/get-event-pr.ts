@@ -3,7 +3,6 @@ import { ddbClient } from '../lib/dynamo-client';
 import { DynamoDBClient, QueryCommand } from '@aws-sdk/client-dynamodb';
 import { marshall, unmarshall } from '@aws-sdk/util-dynamodb';
 import { SwimmingEventType, isSwimmingEvent } from '../lib/swimming-events';
-import { isLocal } from '../lib/local';
 import response from '../lib/response';
 import { FaasLogger, httpStatus, errorStatus } from '@greenhorn/faas-logger';
 import { inspect } from 'util';
