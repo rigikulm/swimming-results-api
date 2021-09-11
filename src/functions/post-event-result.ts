@@ -51,7 +51,7 @@ export const handler = async (event: APIGatewayEvent) => {
     Item: marshall(result),
   };
 
-  ddb = ddbClient(REGION);
+  ddb = ddbClient({region: REGION});
   try {
     const rc = await ddb.send(new PutItemCommand(params));
     log.info(`DDB PutItemCommand response: ${JSON.stringify(rc)}`);

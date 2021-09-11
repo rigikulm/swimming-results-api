@@ -68,7 +68,7 @@ export const handler = async (event: APIGatewayEvent) => {
   };
 
   // Create the DynamoDB client if not previously done
-  ddb = ddbClient(REGION);
+  ddb = ddbClient({region: REGION});
 
   let items: any = [];
   try {

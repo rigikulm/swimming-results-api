@@ -3,27 +3,63 @@ import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { NodeHttpHandler } from '@aws-sdk/node-http-handler';
 import { isLocal } from './local';
 
-// Set the deafult HTTP timeout when connecting to DynamoDB
-const requestHandler = new NodeHttpHandler({
-  connectionTimeout: 100,
-});
+/**
+ * @typedef {Object} ddbOptions - DynamoDB Connection Options
+ * @property {string} [region] - AWS region, defaults to us-west-2
+ * @property {number} [connectionTimeout] - connection timeout in millseconds, defaults to 100ms
+ * @property {number} [maxAttempts] - maximum times to retry the connection, defaults to 3
+ * @property {string} [localEndpoint] - URL for DynamoDB instance when run locally, defaults to http://dynamodb:8000
+ */
+export type ddbOptions = {
+  region?: string,
+  connectionTimeout?: number,
+  maxAttempts?: number,
+  localEndpoint?: string
+};
 
 // Configure DynamoDB Client Configuration 
-const ddbConfig: any = {
+let ddbConfig: any = {
+  region: 'us-west-2',
   logger: console,
   maxAttempts: 3,
-  requestHandler
 };
 
 // DynamoDB client that will be resued across lambda invovations
 let ddb: DynamoDBClient;
 
-export function ddbClient(region: string = 'us-west-2'): DynamoDBClient {
+/**
+ * Creates a DynamoDB client connection
+ * 
+ * Only creates a new connection if one does not already exist,
+ * otherwise reuses the existing connection.
+ * @param {ddbOptions} [opt] - DynamoDB connection options 
+ * @returns {DynamoDBClient} 
+ */
+export function ddbClient(opt: ddbOptions = {}): DynamoDBClient {
+  let requestHandler: NodeHttpHandler;
+
+  // Process the Dynamo Config Options
+  if (opt.hasOwnProperty('region')) {
+    ddbConfig.region = opt.region;
+  }
+
+  if (opt.hasOwnProperty('maxAttempts')) {
+    ddbConfig.maxAttempts = opt.maxAttempts;
+  }
+
+  if (opt.hasOwnProperty('connectionTimeout')) {
+    requestHandler = new NodeHttpHandler({connectionTimeout: opt.connectionTimeout});
+  } else {
+    requestHandler = new NodeHttpHandler({connectionTimeout: 100});
+  }
+  ddbConfig.requestHandler = requestHandler;
+
+  // Create a new DynamoDB connectionif one does not already exist
   if (undefined === ddb) {
-    ddbConfig.region = region;
     if (isLocal()) {
-      ddbConfig['endpoint'] = 'http://dynamodb:8000';
+      ddbConfig['endpoint'] = opt.localEndpoint || 'http://dynamodb:8000';
     }
+    console.log(ddbConfig);
     ddb = new DynamoDBClient(ddbConfig);
   }
 
