@@ -6,8 +6,8 @@
   "scripts": {
     "build": "webpack-cli",
     "watch": "webpack-cli -w",
-    "clean": "rimraf ./.aws_sam ./coverage ./.nyc_output",
-    "clean:all": "rimraf ./.aws_sam ./coverage ./.nyc_output ./node_modules",
+    "clean": "rimraf ./.aws_sam ./coverage ./.nyc_output ./out",
+    "clean:all": "rimraf ./.aws_sam ./coverage ./.nyc_output  ./out ./node_modules",
     "docs": "npx typedoc",
     "test": "mocha",
     "test:cov": "nyc mocha && open ./coverage/index.html",
