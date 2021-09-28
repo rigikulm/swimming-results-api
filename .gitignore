@@ -362,5 +362,8 @@ coverage/
 # Typedoc
 docs/
 
+# Plantuml
+out/
+
 # Macos
 .DS_Store

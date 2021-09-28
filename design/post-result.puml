@@ -1,0 +1,27 @@
+@startuml
+!include ./aws/dist/AWSCommon.puml
+!include ./aws/dist/ApplicationIntegration/APIGateway.puml
+!include ./aws/dist/Compute/Lambda.puml
+!include ./aws/dist/Database/DynamoDB.puml
+!include ./aws/dist/ApplicationIntegration/EventBridge.puml
+
+title Get Swimming Results
+
+actor User as user
+APIGatewayParticipant(apigw, Swimming Results API,,)
+LambdaParticipant(postResult,Add new event result,)
+DynamoDBParticipant(ddb, Swimming Results DB, pk=userid sk=eventid)
+LambdaParticipant(ddbListener, DynamoDB Streams Listener, posts events to EventBridge)
+EventBridgeParticipant(bridge, Event Bus,)
+LambdaParticipant(updateEventPR, Update Event PRs, updates personal records)
+
+user -> apigw : POST a new swimming result
+apigw -> postResult : post new result
+postResult -> ddb : save result in the db
+ddb -> ddbListener : notify listener of the change
+ddbListener -> bridge : push the change to the bridge
+bridge -> updateEventPR : update event PR if a new record
+ddb --> postResult : return SUCCESS
+postResult --> apigw : return success
+apigw --> user : tell user event added to the system
+@enduml
