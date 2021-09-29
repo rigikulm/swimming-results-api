@@ -16,16 +16,7 @@ Parameters:
       - dev
       - prod
       - local
-    Default: dev
-
-Mappings:
-  StageNameMap:
-    dev:
-      TableName: 'swimming-results-db-dev'
-    prod:
-      TableName: 'swimming-results-db-prod'
-    local:
-      TableName: 'swimming-results-db'
+    Default: local
 
 # More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
 Globals:
@@ -41,7 +32,7 @@ Globals:
       'greenhorn:owner': 'Rigikulm'
     Environment:
       Variables:
-        TABLE_NAME: !Sub "greetings-db-${StageName}"
+        TABLE_NAME: !Sub "swimming-results-db-${StageName}"
         STAGE: !Ref StageName
 
 Resources:
@@ -63,7 +54,7 @@ Resources:
   EventPersonalRecordFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
-      FunctionName: !Sub "${ServiceName}-${StageName}-get-event-results"
+      FunctionName: !Sub "${ServiceName}-${StageName}-get-event-pr"
       Description: 'Returns the swimmers personal record for a particular event'
       CodeUri: src/functions
       Handler: get-event-pr.handler
@@ -75,7 +66,7 @@ Resources:
           Properties:
             Path: /swimming/results/{eventId}/pr
             Method: get
-  CreateResultFunction:
+  CreateEventResultFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
       FunctionName: !Sub "${ServiceName}-${StageName}-post-event-result"
@@ -90,10 +81,32 @@ Resources:
           Properties:
             Path: /swimming/results
             Method: post
+  SwimmingResultsDBTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions:
+        -
+          AttributeName: "pk"
+          AttributeType: "S"
+        -
+          AttributeName: "sk"
+          AttributeType: "S"
+      KeySchema:
+        -
+          AttributeName: "pk"
+          KeyType: "HASH"
+        -
+          AttributeName: "sk"
+          KeyType: "RANGE"
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
+      TableName: !Sub "swimming-results-db-${StageName}"
+
 Outputs:
   # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
   # Find out more about other implicit resources you can reference within SAM
   # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
   SwimResultsApi:
     Description: "API Gateway endpoint URL for Prod stage for the results function"
-    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/swimming"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/${StageName}/swimming"

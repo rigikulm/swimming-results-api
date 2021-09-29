@@ -60,7 +60,11 @@ export const handler = async (event: APIGatewayEvent) => {
       httpStatus(500),
       `Error: Could not create swim result. ${inspect(err)}`
     );
-    return Promise.resolve(response.error(500, {}, err));
+    if (err instanceof Error) {
+      return Promise.resolve(response.error(500, {}, err));
+    } else {
+      return Promise.resolve(response.error(500, {}, undefined));
+    }
   }
 
   log.info(httpStatus(201), `Created: result: ${JSON.stringify(result)}`);
